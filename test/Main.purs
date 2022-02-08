@@ -7,6 +7,7 @@ import Data.Function.Uncurried (Fn2)
 import Data.Nullable (Nullable)
 import Data.Variant (Variant)
 import Effect (Effect)
+import Effect.Aff (launchAff_)
 import Effect.Class (liftEffect)
 import Node.Encoding (Encoding(..))
 import Node.FS.Sync (writeTextFile)
@@ -35,7 +36,7 @@ type VariantTest = Variant
   )
 
 main :: Effect Unit
-main = run [consoleReporter] do
+main = launchAff_ $ run [consoleReporter] do
   describe "purescript-ohyes" do
     describe "codegen" do
       it "can generate types" do

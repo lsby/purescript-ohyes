@@ -86,7 +86,7 @@ instance recordHasTSRep ::
       rlp = RLProxy :: RLProxy rl
       fields = intercalate "," $ toTSRepFields rlp
 
-class HasTSRepFields (rl :: RL.RowList) where
+class HasTSRepFields (rl :: RL.RowList Type) where
   toTSRepFields :: RLProxy rl -> List String
 
 instance consHasTSRepFields ::
@@ -121,7 +121,7 @@ instance fakeSumRecordHasTSRep ::
       rlp = RLProxy :: RLProxy rl
       members = toFakeSumRecordMembers rlp
 
-class FakeSumRecordMembers (rl :: RL.RowList) where
+class FakeSumRecordMembers (rl :: RL.RowList Type) where
   toFakeSumRecordMembers :: RLProxy rl -> List String
 
 instance consFakeSumRecordMembers ::

@@ -8,3 +8,4 @@
 /.psa*
 package-lock.json
 /test/generated.ts
+/.spago
