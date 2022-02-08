@@ -65,4 +65,5 @@ in  upstream
 
 ```
 spago install ohyes
+npm i prettier
 ```
