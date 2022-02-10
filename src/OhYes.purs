@@ -7,11 +7,12 @@ import Data.Function.Uncurried (Fn2)
 import Data.List (List, (:))
 import Data.Nullable (Nullable)
 import Data.Variant (Variant)
+import Effect (Effect)
 import HasJSRep (class HasJSRep, class MembersHaveJSRep)
 import Prim.RowList as RL
+import Type.Data.RowList (RLProxy(..))
 import Type.Prelude (class IsSymbol, SProxy(..), reflectSymbol)
 import Type.Proxy (Proxy(..))
-import Type.Data.RowList (RLProxy(..))
 
 toTS :: forall a. HasTSRep a => a -> a
 toTS = identity
@@ -37,6 +38,12 @@ instance stringHasTSRep :: HasTSRep String where
 
 instance booleanHasTSRep :: HasTSRep Boolean where
   toTSRep _ = "boolean"
+
+instance unitHasTSRep :: HasTSRep Unit where
+  toTSRep _ = "void"
+
+instance effectHasTSRep :: HasTSRep a => HasTSRep (Effect a) where
+  toTSRep _ = "() => " <> toTSRep (Proxy :: Proxy a)
 
 instance nullableHasTSRep ::
   ( HasTSRep a
