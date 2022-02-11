@@ -23,7 +23,7 @@ in  upstream
       , repo =
           "https://github.com/lsby/purescript-ohyes"
       , version =
-          "ls-v1.0.0"
+          "ls-v1.0.1"
       }
   with has-js-rep =
       { dependencies =
