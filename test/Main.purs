@@ -5,6 +5,7 @@ import Prelude
 import Data.Foldable (intercalate)
 import Data.Function.Uncurried (Fn2)
 import Data.Nullable (Nullable)
+import Data.Tuple (Tuple)
 import Data.Variant (Variant)
 import Effect (Effect)
 import Effect.Aff (launchAff_)
@@ -29,6 +30,7 @@ type A =
   , i :: Fn2 Number (Fn2 Number Number Number) Number
   , k :: Unit
   , k2 :: Effect Unit
+  , l :: Tuple String Number
   }
 
 type VariantTest = Variant

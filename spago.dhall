@@ -25,6 +25,7 @@ to generate this file without the comments in this block.
   , "prettier"
   , "psci-support"
   , "spec"
+  , "tuples"
   , "typelevel-prelude"
   , "variant"
   ]
