@@ -61,7 +61,7 @@ in  upstream
       , repo =
           "https://github.com/lsby/purescript-record-format"
       , version =
-          "ls-v1.0.1"
+          "ls-v1.0.0"
       }
 ```
 
