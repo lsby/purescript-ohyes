@@ -1,7 +1,8 @@
 # Purescript-OhYes
 
-添加[上游](https://github.com/lsby/purescript-my-upstream)
+先添加[上游](https://github.com/lsby/purescript-my-upstream)
 
+安装:
 ```
 spago install ohyes
 npm i prettier
