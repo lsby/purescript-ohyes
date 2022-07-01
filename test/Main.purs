@@ -21,6 +21,7 @@ import Type.Proxy (Proxy(..))
 
 type A =
   { a :: Number
+  , a1 :: Int
   , b :: String
   , c :: { d :: String }
   , e :: Array String

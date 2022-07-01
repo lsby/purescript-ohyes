@@ -31,6 +31,9 @@ generateTS name _ = "export type " <> name <> " = " <> ty
 class HasJSRep a <= HasTSRep a where
   toTSRep :: Proxy a -> String
 
+instance intHasTSRep :: HasTSRep Int where
+  toTSRep _ = "number"
+
 instance numberHasTSRep :: HasTSRep Number where
   toTSRep _ = "number"
 
