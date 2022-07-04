@@ -70,9 +70,8 @@ import Type.Proxy (Proxy(..))
 
 data AAA
 
-instance dfgdfg :: HasJSRep AAA
-
-instance sdgsd :: HasTSRep AAA where
+instance HasJSRep AAA
+instance HasTSRep AAA where
   toTSRep _ = "string"
 
 main :: Effect Unit
