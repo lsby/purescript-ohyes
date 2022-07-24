@@ -9,7 +9,6 @@ import Data.Nullable (Nullable)
 import Data.Tuple (Tuple)
 import Data.Variant (Variant)
 import Effect (Effect)
-import Foreign (Foreign)
 import HasJSRep (class HasJSRep, class MembersHaveJSRep)
 import Prim.RowList as RL
 import Type.Data.RowList (RLProxy(..))
@@ -69,7 +68,7 @@ instance arrayHasTSRep ::
   ( HasTSRep a
   ) =>
   HasTSRep (Array a) where
-  toTSRep _ = toTSRep p <> "[]"
+  toTSRep _ = "(" <> toTSRep p <> ")" <> "[]"
     where
     p = Proxy :: Proxy a
 
