@@ -99,43 +99,9 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.5-20220203/packages.dhall sha256:f8905bf5d7ce9d886cf4ef1c5893ab55de0b30c82c2b4137f272d075000fbc50
+          https://github.com/purescript/package-sets/releases/download/psc-0.14.5-20220203/packages.dhall
+            sha256:f8905bf5d7ce9d886cf4ef1c5893ab55de0b30c82c2b4137f272d075000fbc50
+      /\  https://github.com/lsby/purescript-my-upstream/releases/download/1658679006/packages.dhall
+            sha256:f989fea383b34d9e2f8151e0e175429eeaf0c1497db2a75d3e0196c69afb19ed
 
 in  upstream
-  with has-js-rep =
-      { dependencies =
-            [ "aff-promise"
-            , "arrays"
-            , "console"
-            , "effect"
-            , "foldable-traversable"
-            , "foreign-object"
-            , "functions"
-            , "nullable"
-            , "prelude"
-            , "psci-support"
-            , "record-format"
-            , "strings"
-            , "tuples"
-            , "typelevel-prelude"
-            , "variant"
-            ]
-      , repo =
-          "https://github.com/lsby/purescript-has-js-rep"
-      , version =
-          "ls-v1.0.1"
-      }
-  with record-format =
-      { dependencies =
-            [ "assert"
-            , "effect"
-            , "prelude"
-            , "psci-support"
-            , "record"
-            , "typelevel-prelude"
-            ]
-      , repo =
-          "https://github.com/lsby/purescript-record-format"
-      , version =
-          "ls-v1.0.0"
-      }

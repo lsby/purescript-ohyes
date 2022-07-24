@@ -6,26 +6,30 @@ import Data.Foldable (intercalate)
 import Data.Function.Uncurried (Fn2)
 import Data.List (List, (:))
 import Data.Nullable (Nullable)
+import Data.Tuple (Tuple)
 import Data.Variant (Variant)
 import Effect (Effect)
+import Foreign (Foreign)
 import HasJSRep (class HasJSRep, class MembersHaveJSRep)
 import Prim.RowList as RL
 import Type.Data.RowList (RLProxy(..))
 import Type.Prelude (class IsSymbol, SProxy(..), reflectSymbol)
 import Type.Proxy (Proxy(..))
-import Data.Tuple (Tuple)
 
 toTS :: forall a. HasTSRep a => a -> a
 toTS = identity
 
 -- | Generate Typescript type signatures for a given type, supplying a name to use as the type name
-generateTS :: forall a
+generateTS
+  :: forall a
    . HasTSRep a
-  => String -> Proxy a -> String
+  => String
+  -> Proxy a
+  -> String
 generateTS name _ = "export type " <> name <> " = " <> ty
   where
-    p = Proxy :: Proxy a
-    ty = toTSRep p
+  p = Proxy :: Proxy a
+  ty = toTSRep p
 
 -- | Our main type class for types that can be represented in Typescript types without conversion. You may want to using newtype instance deriving for this class for your newtypes, but any other types should be tested for correctness.
 class HasJSRep a <= HasTSRep a where
@@ -54,51 +58,58 @@ instance tupleHasTSRep :: (HasTSRep a, HasTSRep b) => HasTSRep (Tuple a b) where
 
 instance nullableHasTSRep ::
   ( HasTSRep a
-  ) => HasTSRep (Nullable a) where
+  ) =>
+  HasTSRep (Nullable a) where
   toTSRep _ = ty <> " | null"
     where
-      p = Proxy :: Proxy a
-      ty = toTSRep p
+    p = Proxy :: Proxy a
+    ty = toTSRep p
 
 instance arrayHasTSRep ::
   ( HasTSRep a
-  ) => HasTSRep (Array a) where
+  ) =>
+  HasTSRep (Array a) where
   toTSRep _ = toTSRep p <> "[]"
     where
-      p = Proxy :: Proxy a
+    p = Proxy :: Proxy a
 
 instance functionHasTSRep ::
   ( HasTSRep a
   , HasTSRep b
-  ) => HasTSRep (Function a b) where
+  ) =>
+  HasTSRep (Function a b) where
   toTSRep _ = "(a: " <> a <> ") => " <> b
     where
-      a = toTSRep (Proxy :: Proxy a)
-      b = toTSRep (Proxy :: Proxy b)
+    a = toTSRep (Proxy :: Proxy a)
+    b = toTSRep (Proxy :: Proxy b)
 
 instance fn2HasTSRep ::
   ( HasTSRep a
   , HasTSRep b
   , HasTSRep c
-  ) => HasTSRep (Fn2 a b c) where
+  ) =>
+  HasTSRep (Fn2 a b c) where
   toTSRep _ =
-      "(a: " <> a <>
-      ", b: " <> b <>
-      ") => " <> c
+    "(a: " <> a
+      <> ", b: "
+      <> b
+      <> ") => "
+      <> c
     where
-      a = toTSRep (Proxy :: Proxy a)
-      b = toTSRep (Proxy :: Proxy b)
-      c = toTSRep (Proxy :: Proxy c)
+    a = toTSRep (Proxy :: Proxy a)
+    b = toTSRep (Proxy :: Proxy b)
+    c = toTSRep (Proxy :: Proxy c)
 
 instance recordHasTSRep ::
-  ( RL.RowToList row  rl
+  ( RL.RowToList row rl
   , MembersHaveJSRep rl
   , HasTSRepFields rl
-  ) => HasTSRep (Record row) where
+  ) =>
+  HasTSRep (Record row) where
   toTSRep _ = "{" <> fields <> "}"
     where
-      rlp = RLProxy :: RLProxy rl
-      fields = intercalate "," $ toTSRepFields rlp
+    rlp = RLProxy :: RLProxy rl
+    fields = intercalate "," $ toTSRepFields rlp
 
 class HasTSRepFields (rl :: RL.RowList Type) where
   toTSRepFields :: RLProxy rl -> List String
@@ -107,16 +118,17 @@ instance consHasTSRepFields ::
   ( HasTSRepFields tail
   , IsSymbol name
   , HasTSRep ty
-  ) => HasTSRepFields (RL.Cons name ty tail) where
+  ) =>
+  HasTSRepFields (RL.Cons name ty tail) where
   toTSRepFields _ = head : tail
     where
-      namep = SProxy :: SProxy name
-      key = reflectSymbol namep
-      typ = Proxy :: Proxy ty
-      val = toTSRep typ
-      head = key <> ":" <> val
-      tailp = RLProxy :: RLProxy tail
-      tail = toTSRepFields tailp
+    namep = SProxy :: SProxy name
+    key = reflectSymbol namep
+    typ = Proxy :: Proxy ty
+    val = toTSRep typ
+    head = key <> ":" <> val
+    tailp = RLProxy :: RLProxy tail
+    tail = toTSRepFields tailp
 
 instance nilHasTSRepFields :: HasTSRepFields RL.Nil where
   toTSRepFields _ = mempty
@@ -129,11 +141,12 @@ instance fakeSumRecordHasTSRep ::
   ( RL.RowToList row rl
   , MembersHaveJSRep rl
   , FakeSumRecordMembers rl
-  ) => HasTSRep (Variant row) where
+  ) =>
+  HasTSRep (Variant row) where
   toTSRep _ = intercalate "|" members
     where
-      rlp = RLProxy :: RLProxy rl
-      members = toFakeSumRecordMembers rlp
+    rlp = RLProxy :: RLProxy rl
+    members = toFakeSumRecordMembers rlp
 
 class FakeSumRecordMembers (rl :: RL.RowList Type) where
   toFakeSumRecordMembers :: RLProxy rl -> List String
@@ -142,16 +155,20 @@ instance consFakeSumRecordMembers ::
   ( FakeSumRecordMembers tail
   , IsSymbol name
   , HasTSRep ty
-  ) => FakeSumRecordMembers (RL.Cons name ty tail) where
+  ) =>
+  FakeSumRecordMembers (RL.Cons name ty tail) where
   toFakeSumRecordMembers _ = head : tail
     where
-      namep = SProxy :: SProxy name
-      key = reflectSymbol namep
-      typ = Proxy :: Proxy ty
-      val = toTSRep typ
-      head = "{type:\"" <> key <> "\", value:" <> val <> "}"
-      tailp = RLProxy :: RLProxy tail
-      tail = toFakeSumRecordMembers tailp
+    namep = SProxy :: SProxy name
+    key = reflectSymbol namep
+    typ = Proxy :: Proxy ty
+    val = toTSRep typ
+    head = "{type:\"" <> key <> "\", value:" <> val <> "}"
+    tailp = RLProxy :: RLProxy tail
+    tail = toFakeSumRecordMembers tailp
 
 instance nilFakeSumRecordMembers :: FakeSumRecordMembers RL.Nil where
   toFakeSumRecordMembers _ = mempty
+
+instance HasTSRep Foreign where
+  toTSRep _ = "{ __PURSTYPE__: 'Foreign' }"
