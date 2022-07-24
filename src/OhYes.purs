@@ -52,8 +52,8 @@ instance unitHasTSRep :: HasTSRep Unit where
 instance effectHasTSRep :: HasTSRep a => HasTSRep (Effect a) where
   toTSRep _ = "() => " <> toTSRep (Proxy :: Proxy a)
 
-instance tupleHasTSRep :: (HasTSRep a, HasTSRep b) => HasTSRep (Tuple a b) where
-  toTSRep _ = "[" <> toTSRep (Proxy :: Proxy a) <> ", " <> toTSRep (Proxy :: Proxy b) <> "]"
+-- instance tupleHasTSRep :: (HasTSRep a, HasTSRep b) => HasTSRep (Tuple a b) where
+--   toTSRep _ = "[" <> toTSRep (Proxy :: Proxy a) <> ", " <> toTSRep (Proxy :: Proxy b) <> "]"
 
 instance nullableHasTSRep ::
   ( HasTSRep a
