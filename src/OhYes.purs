@@ -170,5 +170,5 @@ instance consFakeSumRecordMembers ::
 instance nilFakeSumRecordMembers :: FakeSumRecordMembers RL.Nil where
   toFakeSumRecordMembers _ = mempty
 
-instance HasTSRep Foreign where
-  toTSRep _ = "{ __PURSTYPE__: 'Foreign' }"
+-- instance HasTSRep Foreign where
+--   toTSRep _ = "{ __PURSTYPE__: 'Foreign' }"
